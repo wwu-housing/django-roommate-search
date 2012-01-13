@@ -5,15 +5,17 @@
 <h1>Roommate Search</h1>
 <h2>Profile</h2>
 
-<p>Please complete your profile.</p>
+<dl class="table">
+    <dt>Screen name:</dt>
+    <dd>{{ profile.screen_name }}
+        (<a href="{% url roommate_search_edit_profile %}">Edit profile</a>)
+    </dd>
 
-<form method="post" action="">
-    <dl>
-        {% include "form.html" %}
+    <dt>Bio:</dt>
+    <dd>{{ profile.bio }}</dd>
 
-        <dt></dt>
-        <dl><input type="submit" name="submit" value="Submit" id="id_submit" /></dl>
-    </dl>
-</form>
+    <dt>Status:</dt>
+    <dd>{{ profile.status }}</dd>
+</dl>
 
 {% endblock %}

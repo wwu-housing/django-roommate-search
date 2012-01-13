@@ -1,0 +1,20 @@
+{% extends "roommate_search/base.html" %}
+
+
+{% block content %}
+<h1>Roommate Search</h1>
+<h2>Profile</h2>
+
+<p>Please complete your profile.</p>
+
+<form method="post" action="">
+    {% csrf_token %}
+    <dl>
+        {% include "form.html" %}
+
+        <dt></dt>
+        <dl><input type="submit" name="submit" value="Submit" id="id_submit" /></dl>
+    </dl>
+</form>
+
+{% endblock %}
