@@ -35,6 +35,6 @@ class Profile(models.Model):
                                          editable=False)
 
     def __unicode__(self):
-        return u"<Profile: %s for %s>" % (self.user, self.term)
+        return u"<Profile: %s>" % self.user
     __str__ = __repr__ = __unicode__
 
