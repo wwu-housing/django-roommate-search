@@ -1,13 +1,26 @@
 {% extends "base.html" %}
 
 
+{% block content %}
+<h1>Roommate Search</h1>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
+
+
 {% block navigation %}
 <ul>
     <li><a href="{% url roommate_search_index %}">Roommate Search</a></li>
     <li><a href="{% url roommate_search_profile %}">Profile</a></li>
     <li><a href="{% url roommate_search_search %}">Search</a></li>
-    <!-- <li><a href="{% url roommate_search_index %}">Messages</a></li> -->
+    <li><a href="{% url roommate_search_index %}">Messages</a></li>
 </ul>
 {% endblock %}
-
 
