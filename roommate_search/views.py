@@ -80,4 +80,4 @@ class SearchView(TemplateView):
         if profile.status != "looking":
             return redirect(reverse("roommate_search_profile"))
 
-        return super(SearchView, self).dispatch(*args, **kwargs)
+        return super(SearchView, self).dispatch(request, *args, **kwargs)
