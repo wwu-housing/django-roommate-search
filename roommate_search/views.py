@@ -68,5 +68,16 @@ class SearchView(TemplateView):
     template_name = "roommate_search/search.html"
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
+        # Redirect a user to the profile page if they don't have a profile
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            return redirect(reverse("roommate_search_profile"))
+
+        # Redirect a user to the profile page if they are not looking for a
+        # roommate
+        if profile.status != "looking":
+            return redirect(reverse("roommate_search_profile"))
+
         return super(SearchView, self).dispatch(*args, **kwargs)
