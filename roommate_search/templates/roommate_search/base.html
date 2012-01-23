@@ -20,7 +20,13 @@
     <li><a href="{% url roommate_search_index %}">Roommate Search</a></li>
     <li><a href="{% url roommate_search_profile %}">Profile</a></li>
     <li><a href="{% url roommate_search_search %}">Search</a></li>
-    <li><a href="{% url roommate_search_index %}">Messages</a></li>
+    <li><a href="{% url messages_inbox %}">Messages</a></li>
+    <ul>
+        <li><a href="{% url messages_inbox %} ">&raquo;&nbsp;{% trans "Inbox" %}</a></li>
+        <li><a href="{% url messages_outbox %} ">&raquo;&nbsp;{% trans "Sent Messages" %}</a></li>
+        <li><a href="{% url messages_compose %} ">&raquo;&nbsp;{% trans "New Message" %}</a></li>
+        <li><a href="{% url messages_trash %} ">&raquo;&nbsp;{% trans "Trash" %}</a></li>
+    </ul>
 </ul>
 {% endblock %}
 
