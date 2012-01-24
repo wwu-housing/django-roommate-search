@@ -60,9 +60,8 @@ class ProfileUpdateView(GetProfileObject, UpdateView):
     pass
 
 
-class SearchView(TemplateView):
+class SearchView(GetProfileObject, TemplateView):
     """roommate search search view"""
-
     template_name = "roommate_search/search.html"
 
     def get_context_data(self, **kwargs):
@@ -72,16 +71,15 @@ class SearchView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        profile = self.get_object()
         # Redirect a user to the profile page if they don't have a profile
-        try:
-            profile = Profile.objects.get(user=request.user)
-        except Profile.DoesNotExist:
+        if not profile:
             messages.error(request, "To search for a roommate, you must complete your profile.")
             return redirect(reverse("roommate_search_add_profile"))
-
         # Redirect a user to the profile page if they are not looking for a
         # roommate
-        if profile.status != "looking":
+        elif profile.status != "looking":
             messages.error(request, "To search for a roommate, you must choose \"Looking for a roommate\" as your status.")
             return redirect(reverse("roommate_search_edit_profile"))
 
