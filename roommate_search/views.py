@@ -12,7 +12,10 @@ from models import Profile
 
 class GetProfileObject(object):
     def get_object(self):
-        return Profile.objects.get(user=self.request.user)
+        try:
+            return Profile.objects.get(user=self.request.user)
+        except Profile.DoesNotExist:
+            return None
 
     def get_form_class(self):
         return ProfileForm
@@ -21,9 +24,8 @@ class GetProfileObject(object):
         return reverse("roommate_search_profile")
 
     def get(self, request, *args, **kwargs):
-        try:
-            self.object = self.get_object()
-        except Profile.DoesNotExist:
+        self.object = self.get_object()
+        if not self.object:
             messages.info(request, "Please complete your profile.")
             return redirect(reverse("roommate_search_add_profile"))
 
@@ -36,12 +38,6 @@ class GetProfileObject(object):
 
 class ProfileCreateView(GetProfileObject, CreateView):
     model = Profile
-
-    def get_object(self):
-        try:
-            return Profile.objects.get(user=self.request.user)
-        except Profile.DoesNotExist:
-            return None
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
