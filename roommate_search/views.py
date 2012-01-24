@@ -89,7 +89,5 @@ class SearchView(TemplateView):
             messages.error(request, "To search for a roommate, you must choose \"Looking for a roommate\" as your status.")
             return redirect(reverse("roommate_search_edit_profile"))
 
-        self.context = Profile.objects.all()
-
         return super(SearchView, self).dispatch(request, *args, **kwargs)
 
