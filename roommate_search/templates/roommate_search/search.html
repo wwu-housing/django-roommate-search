@@ -7,4 +7,11 @@
 
 <p>Search for a roommate.</p>
 
+<dl>
+{% for p in profile_list %}
+    <dt><a>{{ p.screen_name }}</a></dt>
+    <dd>{{ p.bio }}</dd>
+{% endfor %}
+</dl>
+
 {% endblock %}

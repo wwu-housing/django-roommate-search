@@ -3,7 +3,11 @@
 
 {% block content %}
 {{ block.super }}
+{% if profile.status == "looking" %}
+    <a href="{% url roommate_search_search %}">Search for roommate</a>
+{% endif %}
 <h2>Profile</h2>
+
 
 <dl class="table">
     <dt>Screen name:</dt>

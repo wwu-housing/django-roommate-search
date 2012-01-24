@@ -69,6 +69,11 @@ class SearchView(TemplateView):
 
     template_name = "roommate_search/search.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        context['profile_list'] = Profile.objects.all()
+        return context
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         # Redirect a user to the profile page if they don't have a profile
@@ -84,4 +89,7 @@ class SearchView(TemplateView):
             messages.error(request, "To search for a roommate, you must choose \"Looking for a roommate\" as your status.")
             return redirect(reverse("roommate_search_edit_profile"))
 
+        self.context = Profile.objects.all()
+
         return super(SearchView, self).dispatch(request, *args, **kwargs)
+
