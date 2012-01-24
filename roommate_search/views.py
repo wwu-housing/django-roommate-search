@@ -66,7 +66,11 @@ class SearchView(GetProfileObject, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
-        context['profile_list'] = Profile.objects.all()
+        profile = self.get_object()
+
+        profile_list = Profile.objects.exclude(user=self.request.user)
+        profile_list = profile_list.filter(clusters__in=profile.clusters.all())
+        context['profile_list'] = profile_list
         return context
 
     @method_decorator(login_required)
