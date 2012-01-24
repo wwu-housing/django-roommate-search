@@ -7,15 +7,16 @@
 
 <dl class="table">
     <dt>Screen name:</dt>
-    <dd>{{ profile.screen_name }}
-        (<a href="{% url roommate_search_edit_profile %}">Edit profile</a>)
-    </dd>
+    <dd>{{ profile.screen_name }}</dd>
 
     <dt>Bio:</dt>
     <dd>{{ profile.bio }}</dd>
 
     <dt>Status:</dt>
     <dd>{{ profile.status }}</dd>
+
+    <dt>Actions</dt>
+    <dd><a href="{% url roommate_search_edit_profile %}">Edit profile</a></dd>
 </dl>
 
 {% endblock %}
