@@ -3,6 +3,7 @@ from django.views.generic import DetailView, TemplateView
 
 from views import (ProfileCreateView, ProfileDetailView, ProfileUpdateView,
                    SearchView)
+from models import Profile
 
 
 urlpatterns = patterns("",
