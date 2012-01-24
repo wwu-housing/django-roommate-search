@@ -70,6 +70,7 @@ class SearchView(GetProfileObject, TemplateView):
 
         profile_list = Profile.objects.exclude(user=self.request.user)
         profile_list = profile_list.filter(clusters__in=profile.clusters.all())
+        profile_list = profile_list.filter(status="looking")
         context['profile_list'] = profile_list
         return context
 
