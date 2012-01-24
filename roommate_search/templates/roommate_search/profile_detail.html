@@ -3,9 +3,6 @@
 
 {% block content %}
 {{ block.super }}
-{% if profile.status == "looking" %}
-    <a href="{% url roommate_search_search %}">Search for roommate</a>
-{% endif %}
 <h2>Profile</h2>
 
 
@@ -21,6 +18,9 @@
 
     <dt>Actions</dt>
     <dd><a href="{% url roommate_search_edit_profile %}">Edit profile</a></dd>
+    {% if profile.status == "looking" %}
+        <dd><a href="{% url roommate_search_search %}">Search for roommate</a></dd>
+    {% endif %}
 </dl>
 
 {% endblock %}
