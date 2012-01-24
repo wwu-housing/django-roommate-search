@@ -1,0 +1,18 @@
+{% extends "roommate_search/base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+{{ block.super }}
+<h2>{% trans "Messages" %}: {% trans "Compose Message"%}</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    <dl>
+        {% include "form.html" %}
+
+        <dt></dt>
+        <dd><input type="submit" value="{% trans "Send" %} &raquo;" /></dd>
+    </dl>
+</form>
+
+{% endblock %}
