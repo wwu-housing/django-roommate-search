@@ -13,13 +13,15 @@
     <dt>Bio:</dt>
     <dd>{{ profile.bio }}</dd>
 
-    <dt>Status:</dt>
-    <dd>{{ profile.status }}</dd>
+    {% if profile.user == user %}
+        <dt>Status:</dt>
+        <dd>{{ profile.status }}</dd>
 
-    <dt>Actions</dt>
-    <dd><a href="{% url roommate_search_edit_profile %}">Edit profile</a></dd>
-    {% if profile.status == "looking" %}
-        <dd><a href="{% url roommate_search_search %}">Search for roommate</a></dd>
+        <dt>Actions</dt>
+        <dd><a href="{% url roommate_search_edit_profile %}">Edit profile</a></dd>
+        {% if profile.status == "looking" %}
+            <dd><a href="{% url roommate_search_search %}">Search for roommate</a></dd>
+        {% endif %}
     {% endif %}
 </dl>
 
