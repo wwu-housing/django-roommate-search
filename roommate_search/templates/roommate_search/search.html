@@ -9,7 +9,7 @@
 
 <dl>
 {% for p in profile_list %}
-    <dt><a>{{ p.screen_name }}</a></dt>
+    <dt><a href="{% url roommate_search_public_profile p.id %}">{{ p.screen_name }}</a></dt>
     <dd>{{ p.bio }}</dd>
 {% endfor %}
 </dl>
