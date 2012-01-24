@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
@@ -23,6 +24,7 @@ class GetProfileObject(object):
         try:
             self.object = self.get_object()
         except Profile.DoesNotExist:
+            messages.info(request, "Please complete your profile.")
             return redirect(reverse("roommate_search_add_profile"))
 
         return super(GetProfileObject, self).get(request, *args, **kwargs)
@@ -49,7 +51,7 @@ class ProfileCreateView(GetProfileObject, CreateView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object:
-            return redirect(reverse("roommate_search_profile"))
+            return redirect(reverse("roommate_search_edit_profile"))
 
         return super(ProfileCreateView, self).get(request, *args, **kwargs)
 
@@ -73,11 +75,13 @@ class SearchView(TemplateView):
         try:
             profile = Profile.objects.get(user=request.user)
         except Profile.DoesNotExist:
-            return redirect(reverse("roommate_search_profile"))
+            messages.error(request, "To search for a roommate, you must complete your profile.")
+            return redirect(reverse("roommate_search_add_profile"))
 
         # Redirect a user to the profile page if they are not looking for a
         # roommate
         if profile.status != "looking":
-            return redirect(reverse("roommate_search_profile"))
+            messages.error(request, "To search for a roommate, you must choose \"Looking for a roommate\" as your status.")
+            return redirect(reverse("roommate_search_edit_profile"))
 
         return super(SearchView, self).dispatch(request, *args, **kwargs)
