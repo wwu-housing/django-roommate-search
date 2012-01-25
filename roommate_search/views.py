@@ -93,22 +93,21 @@ class SearchView(GetProfileObject, TemplateView):
                     if not q_object:
                         q_object = Q(bio__icontains=word)
                     else:
-                        q_object = q_object | Q(bio__icontains=word)
+                        q_object |= Q(bio__icontains=word)
                 if q_object:
                     profile_list = profile_list.filter(q_object)
 
         # process filter
         filter_form = FilterForm(get_data)
-        #if filter_form.is_valid():
-        #    filters = filter_form.cleaned_data.get("filters")
-        #    if "starred" in filters:
-        #        profile_list = profile_list.filter
-        #    raise Exception(filters)
+        if filter_form.is_valid():
+            filters = filter_form.cleaned_data.get("filters")
+            if "starred" in filters:
+                profile_list = profile_list & profile.stars.all()
 
         context["starred"] = profile.stars.all()
-        context['profile_list'] = profile_list
-        context['search_form'] = search_form
-        context['filter_form'] = filter_form
+        context["profile_list"] = profile_list
+        context["search_form"] = search_form
+        context["filter_form"] = filter_form
         return context
 
     @method_decorator(login_required)

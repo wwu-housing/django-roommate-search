@@ -22,4 +22,4 @@ class FilterForm(forms.Form):
     FILTER_CHOICES = (("starred", "Starred profiles"),)
     filters = forms.MultipleChoiceField(choices=FILTER_CHOICES,
                                         required=False,
-    )#                                    widget=forms.CheckboxInput)
+                                        widget=forms.CheckboxSelectMultiple)
