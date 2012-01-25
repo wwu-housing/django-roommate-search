@@ -17,6 +17,15 @@ class GetProfileObject(object):
         except Profile.DoesNotExist:
             return None
 
+    def get_search_set(self):
+        profile = self.get_object()
+
+        # default filter of profiles
+        profile_list = Profile.objects.exclude(user=self.request.user)
+        profile_list = profile_list.filter(clusters__in=profile.clusters.all())
+        profile_list = profile_list.filter(status="looking")
+        return profile_list
+
     def get_form_class(self):
         return ProfileForm
 
@@ -67,16 +76,14 @@ class SearchView(GetProfileObject, TemplateView):
         context = super(SearchView, self).get_context_data(**kwargs)
         profile = self.get_object()
 
-        # add default search set to context
-        profile_list = Profile.objects.exclude(user=self.request.user)
-        #profile_list = profile_list.filter(clusters__in=profile.clusters.all())
-        profile_list = profile_list.filter(status="looking")
-        context['profile_list'] = profile_list
+        # default filter of profiles
+        profile_list = self.get_search_set()
 
         # add query and filter forms to context
         context['search_form'] = SearchForm
         context['filter_form'] = FilterForm
 
+        context['profile_list'] = profile_list
         return context
 
     def post(self, request):
