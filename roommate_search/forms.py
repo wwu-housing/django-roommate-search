@@ -13,12 +13,13 @@ class ProfileForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    search = forms.CharField(label='Search:',
-                             initial='bio search',
-                             max_length=256)
+    q = forms.CharField(label='Roommate Search:',
+                        max_length=256,
+                        required=False)
 
 
 class FilterForm(forms.Form):
     FILTER_CHOICES = (("starred", "Starred profiles"),)
-    #filters = forms.MultipleChoiceField(choices=FILTER_CHOICES)
-    filters = forms.ChoiceField(choices=FILTER_CHOICES)
+    filters = forms.MultipleChoiceField(choices=FILTER_CHOICES,
+                                        required=False,
+    )#                                    widget=forms.CheckboxInput)
