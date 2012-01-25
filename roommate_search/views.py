@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DetailView, TemplateView,
                                   UpdateView)
@@ -79,21 +80,36 @@ class SearchView(GetProfileObject, TemplateView):
         # default filter of profiles
         profile_list = self.get_search_set()
 
-        # add query and filter forms to context
-        context['search_form'] = SearchForm
-        context['filter_form'] = FilterForm
+        get_data = self.request.GET or None
 
-        context['profile_list'] = profile_list
-        return context
-
-    def post(self, request):
-        search_form = SearchForm(request.POST)
+        # process search query
+        search_form = SearchForm(get_data)
         if search_form.is_valid():
-            search = search_form.cleaned_data['search']
+            search_query = search_form.cleaned_data.get("q")
+            if search_query:
+                search_words = search_query.split(" ")
+                q_object = None
+                for word in search_words:
+                    if not q_object:
+                        q_object = Q(bio__icontains=word)
+                    else:
+                        q_object = q_object | Q(bio__icontains=word)
+                if q_object:
+                    profile_list = profile_list.filter(q_object)
 
-        filter_form = FilterForm(request.POST)
-        if filter_form.is_valid():
-            starred = ("starred" == filter_form.cleaned_data['filters'])
+        # process filter
+        filter_form = FilterForm(get_data)
+        #if filter_form.is_valid():
+        #    filters = filter_form.cleaned_data.get("filters")
+        #    if "starred" in filters:
+        #        profile_list = profile_list.filter
+        #    raise Exception(filters)
+
+        context["starred"] = profile.stars.all()
+        context['profile_list'] = profile_list
+        context['search_form'] = search_form
+        context['filter_form'] = filter_form
+        return context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
