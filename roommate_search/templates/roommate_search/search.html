@@ -5,7 +5,19 @@
 {{ block.super }}
 <h2>Search</h2>
 
-<p>Search for a roommate.</p>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ search_form }}
+    <input type="submit" value="Search" />
+</form>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ filter_form }}
+    <input type="submit" value="Filter" />
+</form>
+
+<h2>Results</h2>
 
 <dl>
 {% for p in profile_list %}

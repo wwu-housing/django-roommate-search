@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DetailView, TemplateView,
                                   UpdateView)
 
-from forms import ProfileForm
+from forms import (ProfileForm, SearchForm, FilterForm)
 from models import Profile
 
 
@@ -61,18 +61,32 @@ class ProfileUpdateView(GetProfileObject, UpdateView):
 
 
 class SearchView(GetProfileObject, TemplateView):
-    """roommate search search view"""
     template_name = "roommate_search/search.html"
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
         profile = self.get_object()
 
+        # add default search set to context
         profile_list = Profile.objects.exclude(user=self.request.user)
-        profile_list = profile_list.filter(clusters__in=profile.clusters.all())
+        #profile_list = profile_list.filter(clusters__in=profile.clusters.all())
         profile_list = profile_list.filter(status="looking")
         context['profile_list'] = profile_list
+
+        # add query and filter forms to context
+        context['search_form'] = SearchForm
+        context['filter_form'] = FilterForm
+
         return context
+
+    def post(self, request):
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            search = search_form.cleaned_data['search']
+
+        filter_form = FilterForm(request.POST)
+        if filter_form.is_valid():
+            starred = ("starred" == filter_form.cleaned_data['filters'])
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
