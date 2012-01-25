@@ -5,14 +5,12 @@
 {{ block.super }}
 <h2>Search</h2>
 
-<form action="" method="post">
-    {% csrf_token %}
+<form action="" method="get">
     {{ search_form }}
     <input type="submit" value="Search" />
 </form>
 
-<form action="" method="post">
-    {% csrf_token %}
+<form action="" method="get">
     {{ filter_form }}
     <input type="submit" value="Filter" />
 </form>
