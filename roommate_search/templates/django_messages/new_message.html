@@ -1,7 +1,7 @@
-{% load i18n %}{% load roommate_search %}{% blocktrans with message.recipient|screen_name as recipient and message.sender|screen_name as sender%}Hello {{ recipient }},
+{% load i18n %}{% load roommate_search %}Hello {{ message.recipient|screen_name }},
 
-you received a private message from {{ sender }} with
-the following contents:{% endblocktrans %}
+you received a private message from {{ message.sender|screen_name }} with
+the following contents:
 
 {{ message.body|safe }}
 
