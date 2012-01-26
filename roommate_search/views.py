@@ -70,6 +70,20 @@ class ProfileDetailView(GetProfileObject, DetailView):
     pass
 
 
+class PublicProfileDetailView(DetailView):
+    model = Profile
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicProfileDetailView, self).get_context_data(**kwargs)
+
+        # determine if the user has this profile starred
+        profile = Profile.objects.get(user=self.request.user)
+        starred = profile.stars.filter(id=self.get_object().id)
+
+        context["starred"] = starred
+        return context
+
+
 class ProfileUpdateView(GetProfileObject, UpdateView):
     pass
 
