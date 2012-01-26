@@ -2,7 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import DetailView, TemplateView
 
 from views import (ProfileCreateView, ProfileDetailView, ProfileUpdateView,
-                   SearchView)
+                   SearchView, StarsView)
 from models import Profile
 
 
@@ -10,6 +10,9 @@ urlpatterns = patterns("",
     # index
     url(r"^$", TemplateView.as_view(template_name="roommate_search/index.html"),
         name="roommate_search_index"),
+
+    # stars
+    url(r"^stars/(?P<action>\w+)/(?P<object_id>\d+)/$", StarsView.as_view(), name="roommate_search_stars"),
 
     # profile
     url(r"^profile/$", ProfileDetailView.as_view(), name="roommate_search_profile"),
