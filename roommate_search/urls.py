@@ -26,5 +26,8 @@ urlpatterns = patterns("",
     url(r"^search/$", SearchView.as_view(), name="roommate_search_search"),
 
     # django-messages
+    url(r"^messages/compose/$", "roommate_search.django_messages_override.compose", name="messages_compose"),
+    url(r"^messages/compose/(?P<recipient>[\w.@+-]+)/$", "roommate_search.django_messages_override.compose", name="messages_compose_to"),
+    url(r"^messages/reply/(?P<message_id>[\d]+)/$", "roommate_search.django_messages_override.reply", name="messages_reply"),
     (r"^messages/", include("django_messages.urls")),
 )
