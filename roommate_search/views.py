@@ -1,9 +1,13 @@
+import simplejson
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
 from django.db.models import Q
+from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (CreateView, DetailView, TemplateView,
                                   UpdateView)
 
@@ -126,3 +130,32 @@ class SearchView(GetProfileObject, TemplateView):
 
         return super(SearchView, self).dispatch(request, *args, **kwargs)
 
+
+class StarsView(GetProfileObject, TemplateView):
+    def get(self, request, action, object_id, *args, **kwargs):
+        if not (action == "add" or action == "remove"):
+            return HttpResponseForbidden()
+
+        target_profile = get_object_or_404(Profile, id=int(object_id))
+        user_profile = self.get_object()
+        if target_profile not in self.get_search_set().all():
+            raise Http404()
+        else:
+            # Do actual add/remove
+            getattr(user_profile.stars, action)(target_profile)
+
+            if request.is_ajax():
+                return HttpResponse(simplejson.dumps({"message": "Success"}),
+                                    mimetype="application/json")
+            else:
+                return redirect(reverse("roommate_search_public_profile",
+                                        kwargs={"pk": object_id}))
+
+        return self.star(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(StarsView, self).dispatch(request, *args, **kwargs)
