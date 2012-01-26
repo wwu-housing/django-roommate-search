@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (CreateView, DetailView, TemplateView,
                                   UpdateView)
 
-from forms import (ProfileForm, SearchForm, FilterForm)
+from forms import (FilterForm, ProfileForm, SearchForm)
 from models import Profile
 
 
@@ -165,7 +165,8 @@ class StarsView(GetProfileObject, TemplateView):
                 return redirect(reverse("roommate_search_public_profile",
                                         kwargs={"pk": object_id}))
 
-        return self.star(request, *args, **kwargs)
+        # never called
+        #return super(StarsView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
