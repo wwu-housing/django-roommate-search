@@ -1,14 +1,30 @@
 {% extends "roommate_search/base.html" %}
 
 
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}roommate-search/js/stars.js"></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ STATIC_URL }}roommate-search/css/stars.css" type="text/css" />
+{% endblock %}
+
+
 {% block content %}
 {{ block.super }}
 <h2>Profile</h2>
 
-
 <dl class="table">
     <dt>Screen name:</dt>
-    <dd>{{ profile.screen_name }}</dd>
+    <dd>
+        {% if profile.user != user %}
+            {% include "roommate_search/stars.html" %}
+        {% endif %}
+        {{ profile.screen_name }}
+    </dd>
 
     <dt>Bio:</dt>
     <dd>{{ profile.bio }}</dd>
@@ -24,5 +40,4 @@
         {% endif %}
     {% endif %}
 </dl>
-
 {% endblock %}

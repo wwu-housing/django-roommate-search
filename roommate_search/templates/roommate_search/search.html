@@ -1,6 +1,18 @@
 {% extends "roommate_search/base.html" %}
 
 
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}roommate-search/js/stars.js"></script>
+{% endblock %}
+
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ STATIC_URL }}roommate-search/css/stars.css" type="text/css" />
+{% endblock %}
+
+
 {% block content %}
 {{ block.super }}
 <h2>Search</h2>
@@ -17,10 +29,13 @@
 
 <h2>Results</h2>
 
-<dl>
-{% for p in profile_list %}
-    <dt><a href="{% url roommate_search_public_profile p.id %}">{{ p.screen_name }}</a></dt>
-    <dd>{{ p.bio }}</dd>
+<dl id="roommate-search-profile-list">
+{% for profile in profile_list %}
+    <dt>
+        {% include "roommate_search/stars.html" %}
+        <a href="{% url roommate_search_public_profile profile.id %}">{{ profile.screen_name }}</a>
+    </dt>
+    <dd>{{ profile.bio|truncatewords:50 }}</dd>
 {% endfor %}
 </dl>
 
