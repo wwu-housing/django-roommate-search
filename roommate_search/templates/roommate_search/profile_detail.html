@@ -38,6 +38,12 @@
         {% if profile.status == "looking" %}
             <dd><a href="{% url roommate_search_search %}">Search for roommate</a></dd>
         {% endif %}
+    {% else %}
+        <dt>Actions</dt>
+        <dd><a href="{% url messages_compose_to profile.screen_name %}">
+            <img src="{{ STATIC_URL }}roommate-search/img/email-edit.png" />
+            Send message</a>
+        </dd>
     {% endif %}
 </dl>
 {% endblock %}
