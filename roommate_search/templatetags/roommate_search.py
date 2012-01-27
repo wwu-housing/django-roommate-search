@@ -11,4 +11,8 @@ def screen_name(user):
 
     {{ request.user|screen_name }}
     """
-    return Profile.objects.get(user=user).screen_name
+    try:
+        profile = Profile.objects.get(user=user)
+        return profile.screen_name
+    except Profile.DoesNotExist:
+        return "(Unknown)"
