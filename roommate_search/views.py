@@ -63,7 +63,7 @@ class ProfileCreateView(GetProfileObject, CreateView):
         if self.object:
             return redirect(reverse("roommate_search_edit_profile"))
 
-        return super(ProfileCreateView, self).get(request, *args, **kwargs)
+        return CreateView.get(self, request, *args, **kwargs)
 
 
 class ProfileDetailView(GetProfileObject, DetailView):
