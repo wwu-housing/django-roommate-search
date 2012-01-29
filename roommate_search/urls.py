@@ -16,8 +16,6 @@ urlpatterns = patterns("",
 
     # profile
     url(r"^profile/$", ProfileDetailView.as_view(), name="roommate_search_profile"),
-
-    # TODO: make PublicProfileDetailView to limit a user to viewing search set profiles.
     url(r"^profile/(?P<pk>\d+)/$", PublicProfileDetailView.as_view(), name="roommate_search_public_profile"),
     url(r"^profile/add/$", ProfileCreateView.as_view(), name="roommate_search_add_profile"),
     url(r"^profile/edit/$", ProfileUpdateView.as_view(), name="roommate_search_edit_profile"),

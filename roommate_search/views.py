@@ -70,6 +70,8 @@ class ProfileDetailView(GetProfileObject, DetailView):
     pass
 
 
+# TODO: make PublicProfileDetailView to limit a user to viewing search set
+# profiles.
 class PublicProfileDetailView(DetailView):
     model = Profile
 
