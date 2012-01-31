@@ -8,8 +8,8 @@ from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import (CreateView, DetailView, TemplateView,
-                                  UpdateView)
+from django.views.generic import (CreateView, DetailView, ListView,
+    TemplateView, UpdateView)
 
 from forms import (FilterForm, ProfileForm, SearchForm)
 from models import Profile
@@ -90,44 +90,46 @@ class ProfileUpdateView(GetProfileObject, UpdateView):
     pass
 
 
-class SearchView(GetProfileObject, TemplateView):
-    template_name = "roommate_search/search.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(SearchView, self).get_context_data(**kwargs)
-        profile = self.get_object()
-
-        # default filter of profiles
-        profile_list = self.get_search_set()
-
+class SearchView(GetProfileObject, ListView):
+    def get_search_form(self):
         get_data = self.request.GET or None
+        return SearchForm(get_data)
 
-        # process search query
-        search_form = SearchForm(get_data)
+    def get_filter_form(self):
+        get_data = self.request.GET or None
+        return FilterForm(get_data)
+
+    def get_queryset(self):
+        queryset = self.get_search_set()
+        search_form = self.get_search_form()
         if search_form.is_valid():
             search_query = search_form.cleaned_data.get("q")
             if search_query:
                 search_words = search_query.split(" ")
-                q_object = None
+                query = None
                 for word in search_words:
-                    if not q_object:
-                        q_object = Q(bio__icontains=word)
+                    if not query:
+                        query = Q(bio__icontains=word)
                     else:
-                        q_object |= Q(bio__icontains=word)
-                if q_object:
-                    profile_list = profile_list.filter(q_object)
+                        query |= Q(bio__icontains=word)
+                if query:
+                    queryset = queryset.filter(query)
 
-        # process filter
-        filter_form = FilterForm(get_data)
+        profile = self.get_object()
+        filter_form = self.get_filter_form()
         if filter_form.is_valid():
             filters = filter_form.cleaned_data.get("filters")
             if "starred" in filters:
-                profile_list = profile_list & profile.stars.all()
+                queryset = queryset & profile.stars.all()
 
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        profile = self.get_object()
         context["starred"] = profile.stars.all()
-        context["profile_list"] = profile_list
-        context["search_form"] = search_form
-        context["filter_form"] = filter_form
+        context["search_form"] = self.get_search_form()
+        context["filter_form"] = self.get_filter_form()
         return context
 
     @method_decorator(login_required)
