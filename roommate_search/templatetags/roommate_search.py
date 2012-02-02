@@ -1,5 +1,7 @@
-from ..models import Profile
+from django.core.urlresolvers import reverse
 from django.template import Library
+
+from ..models import Profile
 
 
 register = Library()
@@ -16,3 +18,10 @@ def screen_name(user):
         return profile.screen_name
     except Profile.DoesNotExist:
         return "(Unknown)"
+
+
+@register.filter
+def public_profile_url(user):
+    obj = Profile.objects.get(user=user)
+    return reverse("roommate_search_public_profile",
+                   kwargs={"pk": obj.id})
