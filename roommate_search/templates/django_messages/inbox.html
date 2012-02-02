@@ -22,7 +22,8 @@
             {% if message.replied %}</em>{% endif %}
             {% if message.new %}</strong>{% endif %}</td>
         <td>{{ message.sent_at|date:_("DATETIME_FORMAT") }}</td>
-        <td><a href="{% url messages_delete message.id %}">{% trans "delete" %}</a></td>
+        <td><a href="{% url messages_delete message.id %}">{% trans "delete" %}</a>,
+            <a href="{{ message.sender|public_profile_url }}">view profile</a></td>
     </tr>
 {% endfor %}
     </tbody>

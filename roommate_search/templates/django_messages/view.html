@@ -23,6 +23,7 @@
 
     <dt>Actions</dt>
     {% ifequal message.recipient.pk user.pk %}
+        <dd><a href="{{ message.sender|public_profile_url }}">View profile</a></dd>
         <dd><a href="{% url messages_reply message.id %}">{% trans "Reply" %}</a></dd>
     {% endifequal %}
     <dd><a href="{% url messages_delete message.id %}">{% trans "Delete" %}</a></dd>
