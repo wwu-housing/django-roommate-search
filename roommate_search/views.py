@@ -91,6 +91,8 @@ class ProfileUpdateView(GetProfileObject, UpdateView):
 
 
 class SearchView(GetProfileObject, ListView):
+    paginate_by = 10
+
     def get_search_form(self):
         get_data = self.request.GET or None
         return SearchForm(get_data)

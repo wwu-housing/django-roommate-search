@@ -2,6 +2,13 @@
 {% load i18n %}
 {% load inbox %}
 
+
+{% block stylesheets %}
+{{ block.super }}
+<link rel="stylesheet" href="{{ STATIC_URL }}roommate-search/css/base.css" type="text/css" />
+{% endblock %}
+
+
 {% block content %}
 <h1>Roommate Search</h1>
 
