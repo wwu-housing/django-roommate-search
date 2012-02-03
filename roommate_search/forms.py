@@ -13,7 +13,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    q = forms.CharField(label='Roommate Search:',
+    q = forms.CharField(label='Bio Search:',
                         max_length=256,
                         required=False)
 
