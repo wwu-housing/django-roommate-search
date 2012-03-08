@@ -1,3 +1,4 @@
+{% load roommate_search %}
 {% comment %}
 You can use this template by including it within a div with our pagination class
 like so:
@@ -11,9 +12,9 @@ like so:
 
 {% if page_obj.has_previous %}
     {% ifnotequal page_obj.previous_page_number page_obj.paginator.page_range|first %}
-        <li><a href="?page={{ page_obj.paginator.page_range|first }}">&laquo; First</a></li>
+        <li><a href="{{ page_obj|paginator_query_string:"first" }}">&laquo; First</a></li>
     {% endifnotequal %}
-    <li><a href="?page={{ page_obj.previous_page_number }}">&lsaquo; Previous</a></li>
+    <li><a href="{{ page_obj|paginator_query_string:"previous" }}">&lsaquo; Previous</a></li>
 {% endif %}
 
 <li>
@@ -22,8 +23,8 @@ like so:
 </li>
 
 {% if page_obj.has_next %}
-    <li><a href="?page={{ page_obj.next_page_number }}">Next &rsaquo;</a></li>
+    <li><a href="{{ page_obj|paginator_query_string:"next" }}">Next &rsaquo;</a></li>
     {% ifnotequal page_obj.next_page_number page_obj.paginator.page_range|last %}
-        <li><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+        <li><a href="{{ page_obj|paginator_query_string:"last" }}">Last &raquo;</a></li>
     {% endifnotequal %}
 {% endif %}
