@@ -25,3 +25,20 @@ def public_profile_url(user):
     obj = Profile.objects.get(user=user)
     return reverse("roommate_search_public_profile",
                    kwargs={"pk": obj.id})
+
+
+@register.simple_tag
+def paginator_query_string(page_obj, request, page_arg):
+    page_number = {
+        "first": page_obj.paginator.page_range[0],
+        "previous": page_obj.previous_page_number(),
+        "next": page_obj.next_page_number(),
+        "last": page_obj.paginator.num_pages,
+    }
+
+    query_string = request.GET.copy()
+
+    if page_number.has_key(page_arg):
+        query_string["page"] = page_number[page_arg]
+
+    return query_string.urlencode()
