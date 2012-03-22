@@ -29,6 +29,7 @@ class GetProfileObject(object):
         profile_list = Profile.objects.exclude(user=self.request.user)
         profile_list = profile_list.filter(clusters__in=profile.clusters.all())
         profile_list = profile_list.filter(status="looking")
+        profile_list = profile_list.order_by("-last_activity")
         return profile_list
 
     def get_form_class(self):
