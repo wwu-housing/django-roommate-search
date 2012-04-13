@@ -80,7 +80,11 @@ class PublicProfileDetailView(DetailView):
         context = super(PublicProfileDetailView, self).get_context_data(**kwargs)
 
         # determine if the user has this profile starred
-        profile = Profile.objects.get(user=self.request.user)
+        try:
+            profile = Profile.objects.get(user=self.request.user)
+        except Profile.DoesNotExist:
+            raise Http404()
+
         starred = profile.stars.filter(id=self.get_object().id)
 
         context["starred"] = starred
