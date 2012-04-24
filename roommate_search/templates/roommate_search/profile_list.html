@@ -29,11 +29,7 @@
 
 <h2>Results</h2>
 
-<div class="pagination">
-    <ol>
-        {% include "pagination.html" %}
-    </ol>
-</div>
+{% include "roommate_search/pagination.html" %}
 
 <dl id="roommate-search-profile-list">
 {% for profile in profile_list %}
@@ -49,10 +45,6 @@
 {% endfor %}
 </dl>
 
-<div class="pagination">
-    <ol>
-        {% include "pagination.html" %}
-    </ol>
-</div>
+{% include "roommate_search/pagination.html" %}
 
 {% endblock %}

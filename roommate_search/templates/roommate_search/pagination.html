@@ -1,30 +1,27 @@
-{% load roommate_search %}
 {% comment %}
-You can use this template by including it within a div with our pagination class
-like so:
-
-<div class="pagination">
-    <ul>
-    {% include "pagination.html" %}
-    </ul>
-</div>
+NOTE: Pagination template does not take into account any GET query string used
+      to filter the paginated results.
 {% endcomment %}
 
-{% if page_obj.has_previous %}
-    {% ifnotequal page_obj.previous_page_number page_obj.paginator.page_range|first %}
-        <li><a href="?{% paginator_query_string page_obj request "first" %}">&laquo; First</a></li>
-    {% endifnotequal %}
-    <li><a href="?{% paginator_query_string page_obj request "previous" %}">&lsaquo; Previous</a></li>
-{% endif %}
+<div class="pagination">
+    <ol class="menu">
+    {% if page_obj.has_previous %}
+        {% ifnotequal page_obj.previous_page_number page_obj.paginator.page_range|first %}
+            <li><a href="?page={{ page_obj.paginator.page_range|first }}">&laquo; First</a></li>
+        {% endifnotequal %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">&lsaquo; Previous</a></li>
+    {% endif %}
 
-<li>
-    <strong>{{ page_obj.start_index }} &#8211; {{ page_obj.end_index }}</strong> of
-    <strong>{{ page_obj.paginator.count }}</strong>
-</li>
+    <li>
+        <strong>{{ page_obj.start_index }} &#8211; {{ page_obj.end_index }}</strong> of
+        <strong>{{ page_obj.paginator.count }}</strong>
+    </li>
 
-{% if page_obj.has_next %}
-    <li><a href="?{% paginator_query_string page_obj request "next" %}">Next &rsaquo;</a></li>
-    {% ifnotequal page_obj.next_page_number page_obj.paginator.page_range|last %}
-        <li><a href="?{% paginator_query_string page_obj request "last" %}">Last &raquo;</a></li>
-    {% endifnotequal %}
-{% endif %}
+    {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">Next &rsaquo;</a></li>
+        {% ifnotequal page_obj.next_page_number page_obj.paginator.page_range|last %}
+            <li><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+        {% endifnotequal %}
+    {% endif %}
+    </ol>
+</div>
