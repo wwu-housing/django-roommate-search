@@ -133,8 +133,11 @@ class SearchView(GetProfileObject, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
+        context["request"] = self.request
+
         profile = self.get_object()
         context["starred"] = profile.stars.all()
+
         context["search_form"] = self.get_search_form()
         context["filter_form"] = self.get_filter_form()
         return context
