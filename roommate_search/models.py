@@ -15,7 +15,11 @@ class Profile(models.Model):
                       ("found", "I have found a roommate; do not allow others to search for me."),
                       ("withdrawn", "I am not looking for a roommate at this time."))
 
-    screen_name = models.CharField(max_length=128, unique=True)
+    screen_name = models.CharField(max_length=128, unique=True,
+        help_text="""Required. 128 characters or fewer. Letters, numbers and
+                  @/./+/-/_ characters
+                  """)
+
     bio = models.TextField()
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
