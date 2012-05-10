@@ -24,7 +24,7 @@ class Profile(models.Model):
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               default="looking")
-    user = models.ForeignKey(User, related_name="roommate_search_profiles")
+    user = models.OneToOneField(User)
     clusters = models.ManyToManyField(Cluster, related_name="profiles")
     stars = models.ManyToManyField("self",
                                    symmetrical=False,
