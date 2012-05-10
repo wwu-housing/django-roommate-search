@@ -3,6 +3,7 @@ import simplejson
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.db import IntegrityError
 from django.db.models import Q
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
@@ -57,7 +58,12 @@ class ProfileCreateView(GetProfileObject, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
-        return super(ProfileCreateView, self).form_valid(form)
+
+        try:
+            response = super(ProfileCreateView, self).form_valid(form)
+            return response
+        except IntegrityError:
+            return redirect(reverse("roommate_search_profile"))
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
