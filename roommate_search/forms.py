@@ -1,6 +1,6 @@
 from django import forms
 
-from roommate_search.models import Profile
+from .models import Profile
 
 
 class ProfileAdminForm(forms.ModelForm):
