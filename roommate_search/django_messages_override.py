@@ -1,6 +1,7 @@
 import re
 
 from django import forms
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import Http404
@@ -83,8 +84,7 @@ def compose(request, recipient=None, form_class=ProfileComposeForm,
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user)
-            request.user.message_set.create(
-                message=u"Message successfully sent.")
+            messages.success(request, message=u"Message successfully sent.")
             if success_url is None:
                 success_url = reverse('messages_inbox')
             if request.GET.has_key('next'):
@@ -120,8 +120,7 @@ def reply(request, message_id, form_class=ProfileComposeForm,
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user, parent_msg=parent)
-            request.user.message_set.create(
-                message=u"Message successfully sent.")
+            messages.success(request, message=u"Message successfully sent.")
             if success_url is None:
                 success_url = reverse('messages_inbox')
             return redirect(success_url)
