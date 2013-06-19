@@ -10,7 +10,7 @@
 
 <p>Welcome to Roommate Search</p>
 
-<p>Please <a href="{% url roommate_search_profile %}">
+<p>Please <a href="{% url "roommate_search_profile" %}">
     {% if not user.is_authenticated %}log-in and{% endif %}
     manage your profile</a>!</p>
 

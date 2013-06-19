@@ -33,10 +33,10 @@
 {% for profile in profile_list %}
     <dt>
         {% include "roommate_search/stars.html" %}
-        <a href="{% url roommate_search_public_profile profile.id %}">{{ profile.screen_name }}</a>
+        <a href="{% url "roommate_search_public_profile" profile.id %}">{{ profile.screen_name }}</a>
     </dt>
     <dd>{{ profile.bio|truncatewords:50 }}</dd>
-    <dd><a href="{% url messages_compose_to profile.screen_name %}">
+    <dd><a href="{% url "messages_compose_to" profile.screen_name %}">
         <img src="{{ STATIC_URL }}roommate-search/img/email-edit.png" />
         Send message</a>
     </dd>

@@ -4,8 +4,8 @@ You received a private message from {{ message.sender|screen_name }}.
 
 DO NOT REPLY TO THIS EMAIL, instead go to your inbox or directly to the reply page using the links below:
 
-{% trans "Inbox" %}: {{ site_url }}{% url messages_inbox %}
-{% trans "Reply" %}: {{ site_url }}{% url messages_reply message.pk %}
+{% trans "Inbox" %}: {{ site_url }}{% url "messages_inbox" %}
+{% trans "Reply" %}: {{ site_url }}{% url "messages_reply" message.pk %}
 
 
 {{ message.sender|screen_name }} sent the following message:
