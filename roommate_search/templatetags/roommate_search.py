@@ -29,16 +29,19 @@ def public_profile_url(user):
 
 @register.simple_tag
 def paginator_query_string(page_obj, request, page_arg):
-    page_number = {
-        "first": page_obj.paginator.page_range[0],
-        "previous": page_obj.previous_page_number(),
-        "next": page_obj.next_page_number(),
-        "last": page_obj.paginator.num_pages,
-    }
+    page_number = None
+    if page_arg == "first":
+        page_number = page_obj.paginator.page_range[0]
+    elif page_arg == "previous":
+        page_number = page_obj.previous_page_number()
+    elif page_arg == "next":
+        page_number = page_obj.next_page_number()
+    elif page_arg == "last":
+        page_number = page_obj.paginator.num_pages
 
     query_string = request.GET.copy()
 
-    if page_number.has_key(page_arg):
-        query_string["page"] = page_number[page_arg]
+    if page_number:
+        query_string["page"] = page_number
 
     return query_string.urlencode()
