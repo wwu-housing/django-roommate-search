@@ -1,4 +1,4 @@
-import simplejson
+import json
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -179,7 +179,7 @@ class StarsView(GetProfileObject, TemplateView):
             getattr(user_profile.stars, action)(target_profile)
 
             if request.is_ajax():
-                return HttpResponse(simplejson.dumps({"message": "Success"}),
+                return HttpResponse(json.dumps({"message": "Success"}),
                                     mimetype="application/json")
             else:
                 return redirect(reverse("roommate_search_public_profile",
