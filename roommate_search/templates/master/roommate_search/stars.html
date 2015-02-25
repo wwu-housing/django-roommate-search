@@ -1,0 +1,12 @@
+<a href="{% url "roommate_search_stars" action="remove" object_id=profile.id %}"
+   class="profile-star"
+   {% if not profile in starred %}style="display:none"{% endif %}
+   id="profile-star-{{ profile.id }}">
+  <img src="{{ STATIC_URL }}roommate-search/img/star.png" />
+</a>
+<a href="{% url "roommate_search_stars" action="add" object_id=profile.id %}"
+   class="profile-star"
+   {% if profile in starred %}style="display:none"{% endif %}
+   id="profile-star-{{ profile.id }}">
+  <img src="{{ STATIC_URL }}roommate-search/img/star-faded.png" />
+</a>
