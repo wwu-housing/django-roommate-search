@@ -27,6 +27,7 @@ class CommaSeparatedProfileInput(forms.widgets.Input):
             value = (', '.join([profile.screen_name for profile in value]))
         return super(CommaSeparatedProfileInput, self).render(name, value, attrs)
 
+
 ## fields
 class CommaSeparatedProfileField(CommaSeparatedUserField):
     widget = CommaSeparatedProfileInput
@@ -41,15 +42,16 @@ class CommaSeparatedProfileField(CommaSeparatedUserField):
         names = set(value.split(','))
         names_set = set([name.strip() for name in names if name.strip()])
         profiles = list(Profile.objects.filter(screen_name__in=names_set))
+        # return screen names in names_set that that were not in the profiles
+        # results. That's what the ^ caret is doing.
         unknown_names = names_set ^ set([profile.screen_name for profile in profiles])
 
         recipient_filter = self._recipient_filter
         invalid_users = []
         if recipient_filter is not None:
-            for r in profiles:
-                if recipient_filter(r) is False:
-                    users.remove(r)
-                    invalid_users.append(r.screen_name)
+            for profile in profiles:
+                if recipient_filter(profile) is False:
+                    invalid_users.append(profile.screen_name)
 
         if unknown_names or invalid_users:
             raise forms.ValidationError(u"""The following screen names are
@@ -58,9 +60,11 @@ class CommaSeparatedProfileField(CommaSeparatedUserField):
         users = [profile.user for profile in profiles]
         return users
 
+
 ## forms
 class ProfileComposeForm(ComposeForm):
     recipient = CommaSeparatedProfileField(label=u"Recipient")
+
 
 ## views
 # Override django_messages compose and reply views to replace User.username
@@ -80,7 +84,6 @@ def compose(request, recipient=None, form_class=ProfileComposeForm,
         ``success_url``: where to redirect after successfull submission
     """
     if request.method == "POST":
-        sender = request.user
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user)
@@ -99,6 +102,7 @@ def compose(request, recipient=None, form_class=ProfileComposeForm,
         'form': form,
     }, context_instance=RequestContext(request))
 
+
 @login_required
 def reply(request, message_id, form_class=ProfileComposeForm,
         template_name='django_messages/compose.html', success_url=None,
@@ -116,7 +120,6 @@ def reply(request, message_id, form_class=ProfileComposeForm,
         raise Http404
 
     if request.method == "POST":
-        sender = request.user
         form = form_class(request.POST, recipient_filter=recipient_filter)
         if form.is_valid():
             form.save(sender=request.user, parent_msg=parent)
@@ -135,6 +138,7 @@ def reply(request, message_id, form_class=ProfileComposeForm,
     return render_to_response(template_name, {
         'form': form,
     }, context_instance=RequestContext(request))
+
 
 ## utils
 def format_reply_subject(subject):
@@ -161,4 +165,3 @@ def format_reply_subject(subject):
         'subject': subject,
         'prefix': prefix
     }
-
