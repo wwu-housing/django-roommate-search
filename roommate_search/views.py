@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (CreateView, DetailView, ListView,
     TemplateView, UpdateView)
 
-from forms import (FilterForm, ProfileForm, SearchForm)
+from forms import (FilterForm, ProfileForm, SearchForm, RankForm)
 from models import Profile
 
 
@@ -28,9 +28,16 @@ class GetProfileObject(object):
 
         # default filter of profiles
         profile_list = Profile.objects.exclude(user=self.request.user)
+
+        #checks for gender/gender inclusive
         profile_list = profile_list.filter(clusters__in=profile.clusters.all())
+
+        #checks for people who are looking
         profile_list = profile_list.filter(status="looking")
+
+        #orders by last activity
         profile_list = profile_list.order_by("-last_activity")
+
         return profile_list
 
     def get_form_class(self):
@@ -112,6 +119,10 @@ class SearchView(GetProfileObject, ListView):
         get_data = self.request.GET or None
         return FilterForm(get_data)
 
+    def get_rank_form(self):
+        get_data = self.request.GET or None
+        return RankForm(get_data)
+
     def get_queryset(self):
         queryset = self.get_search_set()
         search_form = self.get_search_form()
@@ -135,6 +146,10 @@ class SearchView(GetProfileObject, ListView):
             if "starred" in filters:
                 queryset = queryset & profile.stars.all()
 
+        rank_form = self.get_rank_form()
+        if rank_form.is_valid():
+            choices = rank_form.cleaned_data.get("choices")
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -146,6 +161,7 @@ class SearchView(GetProfileObject, ListView):
 
         context["search_form"] = self.get_search_form()
         context["filter_form"] = self.get_filter_form()
+        context["rank_form"] = self.get_rank_form()
         return context
 
     @method_decorator(login_required)
