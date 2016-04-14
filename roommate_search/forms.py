@@ -32,22 +32,22 @@ class ProfileForm(ProfileAdminForm):
 
 
 class SearchForm(forms.Form):
-    q = forms.CharField(label="Bio Search:",
+    q = forms.CharField(label="Keyword:",
                         max_length=256,
                         required=False)
 
 
 class FilterForm(forms.Form):
-    FILTER_CHOICES = (("starred", "Starred profiles"),("RFR", "New Freshman"), ("RTR", "New Transfer"), ("RR", "Returning Student"), ("RHNC", "Honors Program"), ("RFX", "Fairhaven College"))
-    filters = forms.MultipleChoiceField(label="Filter by student status:",
+    FILTER_CHOICES = (("starred", "Starred profiles"),("age", "Age"),("RFR", "New Freshman"), ("RTR", "New Transfer"), ("RR", "Returning Student"), ("RHNC", "Honors Program"), ("RFX", "Fairhaven College"))
+    filters = forms.MultipleChoiceField(label="",
                                         choices=FILTER_CHOICES,
                                         required=False,
                                         widget=forms.CheckboxSelectMultiple)
 
 class RankForm(forms.Form):
-    RANK_CHOICES = ((0, "Studying vs Socializing in the room"), (1, "Bedtime on school nights"), (2, "Attitude about alcohol in the room"), (3, "Frequency of visitors in the room"), (4, "Messy, tisy, or in between"),
-                    (5, "Tolerance for noise"), (6, "Openness to sharing things"), (7, "Smoking status"))
-    choices = forms.MultipleChoiceField(label="Filter by a roommate factor in the housing application:",
+    RANK_CHOICES = ((1, "Studying vs Socializing in the room"), (2, "Bedtime on school nights"), (3, "Attitude about alcohol in the room"), (4, "Frequency of visitors in the room"), (5, "Messy, tidy, or in between"),
+                    (6, "Tolerance for noise"), (7, "Openness to sharing things"), (8, "Smoking status"))
+    choices = forms.MultipleChoiceField(label="",
                                         choices=RANK_CHOICES,
                                         required=False,
                                         widget=forms.CheckboxSelectMultiple)

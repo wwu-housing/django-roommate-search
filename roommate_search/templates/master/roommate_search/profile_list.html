@@ -18,12 +18,25 @@
 <h2>Search</h2>
 
 <form action="" method="get">
+
+    <p>
+        <b>Keyword Search</b>
+        <br/>
+        Search for bios containing a keyword like "Honors Program", "athlete", or "peanut allergy."
+    </p>
+
     {{ search_form }}
     <input type="submit" value="Search" />
 
+    <p>
+        <b>Filter by student status:</b>
+    </p>
     {{ filter_form }}
     <input type="submit" value="Filter" />
 
+    <p>
+        <b>Filter by roommate factors in the housing application: </b>
+    </p>
     {{rank_form}}
     <input type="submit" value="Rank" />
 </form>
